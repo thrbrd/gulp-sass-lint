@@ -41,8 +41,12 @@ var sassLint = function (options) {
   return compile;
 }
 
-sassLint.format = function () {
+sassLint.format = function (reportFn) {
   var compile = through.obj(function (file, encoding, cb) {
+    if (file.sassLint && typeof reporterFn === 'function') {
+      reporterFn(file.sassLint);
+      return cb();
+    }
     if (file.isNull()) {
       return cb();
     }
